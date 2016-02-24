@@ -3,6 +3,7 @@
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
@@ -12,7 +13,7 @@
 	Take an input and call a function that changes the css size attributes 
 	-->
 
-	<form>
+	<form id="intForm">
 		Int1:<br>
 		<input type="text" name="int1" id="int1"><br>
 		Int2:<br>
@@ -21,4 +22,23 @@
 		<input type="text" name="int3" id="int3"><br>
 		<input type="submit" value="Submit">
 	</form>
+
+	<div id="chart">
+		<div class="barOuter">
+			<div id="bar1" class="bar">	
+			</div>
+		</div>
+		<div class="barOuter">
+			<div id="bar2" class="bar">	
+			</div>
+		</div>
+		<div class="barOuter">
+			<div id="bar3" class="bar">	
+			</div>
+		</div>
+	</div>
+
+	<script>
+		//alert($("#int1").value)
+	</script>
 </body>
