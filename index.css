@@ -26,3 +26,10 @@
 	float: left;
 }
 
+.selected {
+	background-color: blue;
+}
+
+/*.col_10 {
+	border: 5px solid green;
+}*/
