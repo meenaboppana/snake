@@ -1,4 +1,5 @@
-$(document).ready -> 
+$(document).ready ->
+
 	$("body").append("<p>Hello world (js)</p>")
 
 	$('form#intForm').submit ->
@@ -30,4 +31,14 @@ $(document).ready ->
 		$('#bar3').css("width", percents[2] + "%")
 		false	
 
-	$("body").append("<p>Hello world 2(js)</p>")
+	sz = 10  # length and width of grid
+
+	makeGrid = ->
+		for i in [1..sz]
+			$('body').append("<div class='row'>") 
+			for j in [1..sz]
+				$('body').append("<div class='box'> </div>") 
+			$('body').append("</div>") 
+
+	makeGrid()
+	#$("body").append("<p>Hello world 2(js)</p>")
