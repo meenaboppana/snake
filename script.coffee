@@ -85,19 +85,12 @@ $(document).ready ->
 		row_name + ' ' + col_name
 
 
+	snake = []
 	head_row = sz-1
 	head_col = 0
 
-	head = $(tupleToString(head_row, head_col))
-	console.log "head",head
-	head.attr('data_test', 'hi')
-	console.log "data_test",head.attr('data_test')
-
-	tail_row = sz-1
-	tail_col = 0
-
-	# moves head and tail to next square, given tuple of where to move to
-	moveNextSquare = (nextHead, nextTail, head_dir) ->
+	# moves head to next square, given tuple of where to move to
+	moveNextSquare = (nextHead) ->
         switch nextHead
           when null
             console.log "ERROR: off the grid"
@@ -106,22 +99,24 @@ $(document).ready ->
 
             head = $(tupleToString(head_row, head_col))
             head.addClass('selected')
-            head.attr('data_dir',head_dir)
+            snake.push({row: head_row, col: head_col})
 
-            # [tail_row, tail_col] = nextTail  
-            # tail = $(tupleToString(tail_row, tail_col))
-            # tail.removeClass('selected')
-            # tail_dir = tail.attr('data_dir')
+            # delete the tail 
+            tail_row = snake[0].row
+            tail_col = snake[0].col
 
-        console.log tail_row
-        console.log tail_col
+            tail = $(tupleToString(tail_row, tail_col))
+            tail.removeClass('selected')
+            snake.splice(0,1)
+
 
 	initializeSnake = ->
 		head = $(tupleToString(head_row, head_col))
 		head.addClass('selected')
-		head.attr('data_dir',2)
 
-		console.log "HI"
+		snake.push({row: head_row, col: head_col})
+
+		#console.log "HI"
 
 		$(document).keydown( (e) ->
 			#console.log "we are here"
@@ -137,16 +132,16 @@ $(document).ready ->
 		        #       head = $(tupleToString(row,col))
 
 		        when 37 #then break  # up
-		          moveNextSquare( nextSquare(head_row,head_col,0), nextSquare(tail_row, tail_col,dir), 0)
+		          moveNextSquare( nextSquare(head_row,head_col,0))
 
 		        when 38 #then break  # up
-		          moveNextSquare( nextSquare(head_row,head_col,1), nextSquare(tail_row, tail_col,dir), 1)
+		          moveNextSquare( nextSquare(head_row,head_col,1))
 
 		        when 39 #then break # right
-		          moveNextSquare( nextSquare(head_row,head_col,2), nextSquare(tail_row, tail_col,dir), 2)
+		          moveNextSquare( nextSquare(head_row,head_col,2))
 
 		        when 40 #then break # down
-		          moveNextSquare( nextSquare(head_row,head_col,3), nextSquare(tail_row, tail_col,dir), 3)
+		          moveNextSquare( nextSquare(head_row,head_col,3))
 
 		        else console.log "Non-arrow key pressed"
 
