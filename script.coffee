@@ -89,6 +89,21 @@ $(document).ready ->
 	head_row = sz-1
 	head_col = 0
 
+	food_row = null 
+	food_col = null  
+
+	isAtFood = ->
+		if food_row == head_row and food_col == head_col
+			console.log "AT FOOD"
+			food = $(tupleToString(food_row, food_col))
+			food.removeClass('food')
+			[r,c] = generateFood()
+			food = $(tupleToString(r,c))
+			food.addClass('food')
+			return true 
+		else 
+			return false 
+
 	# moves head to next square, given tuple of where to move to
 	moveNextSquare = (nextHead) ->
         switch nextHead
@@ -101,13 +116,38 @@ $(document).ready ->
             head.addClass('selected')
             snake.push({row: head_row, col: head_col})
 
-            # delete the tail 
-            tail_row = snake[0].row
-            tail_col = snake[0].col
+            # delete the tail, if not at food 
+            if not isAtFood()
+	            tail_row = snake[0].row
+	            tail_col = snake[0].col
 
-            tail = $(tupleToString(tail_row, tail_col))
-            tail.removeClass('selected')
-            snake.splice(0,1)
+	            tail = $(tupleToString(tail_row, tail_col))
+	            tail.removeClass('selected')
+	            snake.splice(0,1)
+           
+
+    generateFood = ->
+
+    	randCol = Math.floor(Math.random() * sz)
+    	randRow = Math.floor(Math.random() * sz)
+    	food_row = randRow
+    	food_col = randCol
+    	return [randRow, randCol]
+
+		# while true 
+		# 	console.log "here"
+		# 	randCol = Math.floor(Math.random() * sz)
+		# 	randRow = Math.floor(Math.random() * sz)
+		# 	food_row = randRow
+		# 	food_col = randCol
+		# 	notSnake = 1
+		# 	for box in snake
+		# 		if food_row == box.row and food_col == box.col 
+		# 			console.log "true"
+		# 			notSnake = 0
+		# 	if notSnake == 1        
+		# 		console.log "hereeeeeee"
+		# 		return [randRow, randCol]
 
 
 	initializeSnake = ->
@@ -115,6 +155,9 @@ $(document).ready ->
 		head.addClass('selected')
 
 		snake.push({row: head_row, col: head_col})
+		[r,c] = generateFood()
+		food = $(tupleToString(r,c))
+		food.addClass('food')
 
 		#console.log "HI"
 
