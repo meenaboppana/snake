@@ -39,7 +39,7 @@ $(document).ready ->
 		false	
 		"""
 
-	sz = 10  # length and width of grid
+	sz = 50  # length and width of grid
 
 	makeGrid = ->
 		body = $('body')
@@ -92,6 +92,8 @@ $(document).ready ->
 	food_row = null 
 	food_col = null  
 
+	dir = 2 # initialize direction to go to right
+
 	isAtFood = ->
 		if food_row == head_row and food_col == head_col
 			console.log "AT FOOD"
@@ -104,53 +106,56 @@ $(document).ready ->
 		else 
 			return false 
 
+	isAtSelf = -> 
+		head = $(tupleToString(head_row, head_col))
+		return head.hasClass('selected')
+
+		
+
 	# moves head to next square, given tuple of where to move to
 	moveNextSquare = (nextHead) ->
-        switch nextHead
-          when null
-            alert("YOU LOSE! STARTING NEW GAME...")
-            location.reload();
-            console.log "ERROR: off the grid"
-          else 
-            [head_row,head_col] = nextHead  
+		switch nextHead
+			when null
+				alert("YOU LOSE! STARTING NEW GAME...")
+				location.reload();
+				console.log "ERROR: off the grid"
+			else 
+	            [head_row,head_col] = nextHead  
 
-            new_obj = {row: head_row, col: head_col}
+	            head = $(tupleToString(head_row, head_col))
 
-			#for i in [0..snake.length-1]
-			# console.log "snake length",snake.length  
-			#console.log snake
-			# console.log "snake[0]",snake[0]   
-			# i = 0
-			# if snake[0].row == head_row and snake[0].col == head_col
-			# 	alert("yay")
+	            if isAtSelf()
+	            	alert("YOU LOSE! STARTING NEW GAME...")
+		            location.reload();
+		            console.log "ERROR: collision with self"
 
-			# console.log "snake", snake[0] 
-			# console.log "snake", snake[1]
-			# console.log "snake", snake[2]
-			# console.log "snake", snake[3]   
-			# console.log "object", {row: head_row, col: head_col} 
+	            head.addClass('selected')
+	            snake.push({row: head_row, col: head_col})
 
-			head = $(tupleToString(head_row, head_col))
-			head.addClass('selected')
-			snake.push({row: head_row, col: head_col})
+	            # delete the tail, if not at food 
+	            if not isAtFood()
+		            tail_row = snake[0].row
+		            tail_col = snake[0].col
 
-            # delete the tail, if not at food 
-			if not isAtFood()
-	            tail_row = snake[0].row
-	            tail_col = snake[0].col
+		            tail = $(tupleToString(tail_row, tail_col))
+		            tail.removeClass('selected')
+		            snake.splice(0,1)
 
-	            tail = $(tupleToString(tail_row, tail_col))
-	            tail.removeClass('selected')
-	            snake.splice(0,1)
-           
 
-    generateFood = ->
+	generateFood = ->
 
-    	randCol = Math.floor(Math.random() * sz)
-    	randRow = Math.floor(Math.random() * sz)
-    	food_row = randRow
-    	food_col = randCol
-    	return [randRow, randCol]
+		randCol = Math.floor(Math.random() * sz)
+		randRow = Math.floor(Math.random() * sz)
+		food_row = randRow
+		food_col = randCol
+		food = $(tupleToString(food_row, food_col))
+		while food.hasClass('selected')
+			randCol = Math.floor(Math.random() * sz)
+			randRow = Math.floor(Math.random() * sz)
+			food_row = randRow
+			food_col = randCol
+			food = $(tupleToString(food_row, food_col))
+		return [randRow, randCol]
 
 		# while true 
 		# 	console.log "here"
@@ -166,6 +171,14 @@ $(document).ready ->
 		# 	if notSnake == 1        
 		# 		console.log "hereeeeeee"
 		# 		return [randRow, randCol]
+
+	# moveSnakeForward = ->
+	# 	moveNextSquare( nextSquare(head_row,head_col,dir))
+	# 	console.log "hi moving forward"
+
+	setInterval () ->
+        moveNextSquare( nextSquare(head_row,head_col,dir))
+    , 200
 
 
 	initializeSnake = ->
@@ -195,15 +208,19 @@ $(document).ready ->
 		        #       head = $(tupleToString(row,col))
 
 		        when 37 #then break  # up
+		          dir = 0
 		          moveNextSquare( nextSquare(head_row,head_col,0))
 
 		        when 38 #then break  # up
+		          dir = 1
 		          moveNextSquare( nextSquare(head_row,head_col,1))
 
 		        when 39 #then break # right
+		          dir = 2
 		          moveNextSquare( nextSquare(head_row,head_col,2))
 
 		        when 40 #then break # down
+		          dir = 3
 		          moveNextSquare( nextSquare(head_row,head_col,3))
 
 		        else console.log "Non-arrow key pressed"
