@@ -64,7 +64,7 @@ $(document).ready ->
 				# box.attr('class', box.attr('class') + ' ' + 'selected')
 
 				row.append(box)
-
+		console.log "CALLED"
 	# Returns a (row, col) pair representing the next square to move head to
 	# or returns an error if person tries to move off screen
 	nextSquare = (row, col, dir) ->
@@ -98,7 +98,7 @@ $(document).ready ->
 			food = $(tupleToString(food_row, food_col))
 			food.removeClass('food')
 			[r,c] = generateFood()
-			food = $(tupleToString(r,c)) 
+			food = $(tupleToString(r,c))
 			food.addClass('food')
 			return true 
 		else 
@@ -108,34 +108,16 @@ $(document).ready ->
 	moveNextSquare = (nextHead) ->
         switch nextHead
           when null
-            alert("YOU LOSE! STARTING NEW GAME...")
-            location.reload();
             console.log "ERROR: off the grid"
           else 
             [head_row,head_col] = nextHead  
 
-            new_obj = {row: head_row, col: head_col}
-
-			#for i in [0..snake.length-1]
-			# console.log "snake length",snake.length  
-			#console.log snake
-			# console.log "snake[0]",snake[0]   
-			# i = 0
-			# if snake[0].row == head_row and snake[0].col == head_col
-			# 	alert("yay")
-
-			# console.log "snake", snake[0] 
-			# console.log "snake", snake[1]
-			# console.log "snake", snake[2]
-			# console.log "snake", snake[3]   
-			# console.log "object", {row: head_row, col: head_col} 
-
-			head = $(tupleToString(head_row, head_col))
-			head.addClass('selected')
-			snake.push({row: head_row, col: head_col})
+            head = $(tupleToString(head_row, head_col))
+            head.addClass('selected')
+            snake.push({row: head_row, col: head_col})
 
             # delete the tail, if not at food 
-			if not isAtFood()
+            if not isAtFood()
 	            tail_row = snake[0].row
 	            tail_col = snake[0].col
 
@@ -144,28 +126,24 @@ $(document).ready ->
 	            snake.splice(0,1)
            
 
-    generateFood = ->
+    generateFood = ->  
+    	food_col = Math.floor(Math.random() * sz)
+		food_row = Math.floor(Math.random() * sz)
+		return [food_row, food_col]
 
-    	randCol = Math.floor(Math.random() * sz)
-    	randRow = Math.floor(Math.random() * sz)
-    	food_row = randRow
-    	food_col = randCol
-    	return [randRow, randCol]
-
-		# while true 
-		# 	console.log "here"
+		# while 1 
 		# 	randCol = Math.floor(Math.random() * sz)
 		# 	randRow = Math.floor(Math.random() * sz)
 		# 	food_row = randRow
 		# 	food_col = randCol
 		# 	notSnake = 1
 		# 	for box in snake
-		# 		if food_row == box.row and food_col == box.col 
-		# 			console.log "true"
-		# 			notSnake = 0
+	 #    		if food_row == box.row and food_col == box.col 
+  #               	notSnake = 0
 		# 	if notSnake == 1        
 		# 		console.log "hereeeeeee"
 		# 		return [randRow, randCol]
+
 
 
 	initializeSnake = ->
@@ -173,8 +151,6 @@ $(document).ready ->
 		head.addClass('selected')
 
 		snake.push({row: head_row, col: head_col})
-		console.log "snake", snake 
-
 		[r,c] = generateFood()
 		food = $(tupleToString(r,c))
 		food.addClass('food')
@@ -212,7 +188,9 @@ $(document).ready ->
 		    #e.preventDefault() # prevent the default action (scroll / move caret)
 		)
 
+	console.log "BEFORE MAKEGRID"
 	makeGrid()
+	
 	initializeSnake()
 	console.log nextSquare(sz-1,0,1)
 	#$("body").append("<p>Hello world 2(js)</p>")
