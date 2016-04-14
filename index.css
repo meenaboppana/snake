@@ -32,9 +32,10 @@
 
 .food {
 	background-color: orange;
+	border: 1px solid white;
 }
 
-body {
+.grid {
 	border: 5px solid black;
 }
 

@@ -43,25 +43,23 @@ $(document).ready ->
 
 	makeGrid = ->
 		body = $('body')
+		grid = $('<div>')
+		grid.addClass('grid')
+		body.append(grid)
+
 		for i in [0..sz-1]
 			row_plus_ind = "row_"+i 
 			row = $('<div>')
 			row.addClass('row')
 			row.addClass(row_plus_ind)
 
-			body.append(row)
+			grid.append(row)
 
 			for j in [0..sz-1]
 				col_plus_ind = "col_"+j
 				box = $('<div>')
 				box.addClass('box')
 				box.addClass(col_plus_ind)
-				# box.addClass('selected')
-
-				# box.attr('class', 'box')
-				# box.attr('class', 'selected')
-				# "<div class='box selected'>"
-				# box.attr('class', box.attr('class') + ' ' + 'selected')
 
 				row.append(box)
 
@@ -157,25 +155,6 @@ $(document).ready ->
 			food = $(tupleToString(food_row, food_col))
 		return [randRow, randCol]
 
-		# while true 
-		# 	console.log "here"
-		# 	randCol = Math.floor(Math.random() * sz)
-		# 	randRow = Math.floor(Math.random() * sz)
-		# 	food_row = randRow
-		# 	food_col = randCol
-		# 	notSnake = 1
-		# 	for box in snake
-		# 		if food_row == box.row and food_col == box.col 
-		# 			console.log "true"
-		# 			notSnake = 0
-		# 	if notSnake == 1        
-		# 		console.log "hereeeeeee"
-		# 		return [randRow, randCol]
-
-	# moveSnakeForward = ->
-	# 	moveNextSquare( nextSquare(head_row,head_col,dir))
-	# 	console.log "hi moving forward"
-
 	setInterval () ->
         moveNextSquare( nextSquare(head_row,head_col,dir))
     , 200
@@ -192,20 +171,10 @@ $(document).ready ->
 		food = $(tupleToString(r,c))
 		food.addClass('food')
 
-		#console.log "HI"
-
 		$(document).keydown( (e) ->
 			#console.log "we are here"
 
 		    switch e.which
-
-		        # when 37 #then console.log "YOOOOO"  # left
-		        #   switch nextSquare(row,col,0)
-		        #     when null
-		        #       console.log "ERROR: off the grid"
-		        #     else 
-		        #       [row,col] = nextSquare(row,col,0)
-		        #       head = $(tupleToString(row,col))
 
 		        when 37 #then break  # up
 		          dir = 0
@@ -224,12 +193,8 @@ $(document).ready ->
 		          moveNextSquare( nextSquare(head_row,head_col,3))
 
 		        else console.log "Non-arrow key pressed"
-
-		        #default: return # exit this handler for other keys
-		    #e.preventDefault() # prevent the default action (scroll / move caret)
 		)
 
 	makeGrid()
 	initializeSnake()
 	console.log nextSquare(sz-1,0,1)
-	#$("body").append("<p>Hello world 2(js)</p>")

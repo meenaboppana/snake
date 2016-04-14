@@ -7,15 +7,18 @@ $(document).ready(function() {
   });
   sz = 50;
   makeGrid = function() {
-    var body, box, col_plus_ind, i, j, k, ref, results, row, row_plus_ind;
+    var body, box, col_plus_ind, grid, i, j, k, ref, results, row, row_plus_ind;
     body = $('body');
+    grid = $('<div>');
+    grid.addClass('grid');
+    body.append(grid);
     results = [];
     for (i = k = 0, ref = sz - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
       row_plus_ind = "row_" + i;
       row = $('<div>');
       row.addClass('row');
       row.addClass(row_plus_ind);
-      body.append(row);
+      grid.append(row);
       results.push((function() {
         var l, ref1, results1;
         results1 = [];
